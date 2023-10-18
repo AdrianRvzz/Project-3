@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/styles.css">
+
+  <title>To Do List</title>
+</head>
+
+<body>
+  <div class="background-chair"></div>
+  <div id="container-notebook"
+    class="container d-flex justify-content-center align-items-center flex-column shadow p-0 my-5">
+
+
+    <div class="background-notebook"></div>
+    <div class="line-notebook"></div>
+    <div class="header-notebook row d-flex justify-content-center align-items-center">
+      <div class="col-12"><span class="title-notebook">Cargando...</span></div>
+    </div>
+
+   
+
+
+  
+
+
+
+  </div>
+
+ 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script>
+    let exampleToDoList = {
+        "Work": {
+            "Meeting": 0
+        }
+    };
+
+    function getToDoList() {
+        return new Promise((resolve, reject) => {
+            let cachedToDoList = getToDoInCache();
+            if (cachedToDoList) {
+                console.log("ToDoList already created");
+                resolve(cachedToDoList);
+            } else {
+                console.log("Creating a new one");
+                setToDoInCache(exampleToDoList);
+                reject("No ToDoList detected, created new with example values: " + JSON.stringify(exampleToDoList));
+            }
+        });
+    }
+
+    let myToDoList;
+    function setToDoInCache(myToDoList) {
+    localStorage.setItem("myTodoList", JSON.stringify(myToDoList));
+}
+
+
+    function getToDoInCache() {
+        let myToDoList = JSON.parse(localStorage.getItem("myTodoList"));
+        return myToDoList;
+    }
+
+    function updateInServerToDoList(myToDoList) {
+        fetch("/update", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ toDoList: myToDoList })
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/home";
+            } else {
+                console.error('Error al actualizar en el servidor.');
+            }
+        })
+        .catch(error => {
+            console.error('Error en la solicitud:', error);
+        });
+    }
+
+    $(document).ready(() => {
+        getToDoList()
+            .then(todoList => {
+                myToDoList = todoList;
+                console.log(myToDoList);
+                updateInServerToDoList(myToDoList);
+            })
+            .catch(error => {
+                console.error(error);
+                updateInServerToDoList(myToDoList);
+            });
+    });
+</script>
+</body>
+
+</html>

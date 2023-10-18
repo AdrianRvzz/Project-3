@@ -2,72 +2,291 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
-    <link rel="stylesheet" href="/styles/styles.css">
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>To Do List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/styles.css">
+
+  <title>To Do List</title>
 </head>
 
 <body>
-    <div  id="container-notebook" class="container d-flex justify-content-center align-items-center flex-column shadow">
-        <div class="background"></div>
-        <div class="container-date row d-flex justify-content-center align-items-center" >
-        <span  class="col-6 text-center date-day">
-            <%= currentDate.day %>
-        </span>
-        <!-- <h2> <%= currentDate.dayOfWeek %></h2> -->
-        <div class="col-6 text-center"> 
-            <span  class="date-month-year">
-                <%= currentDate.month %>
-           
-                <%= currentDate.year %>
-            </span>
+  <div class="background-chair"></div>
+  <div id="container-notebook"
+    class="container d-flex justify-content-center align-items-center flex-column shadow p-0 my-5">
+
+
+    <div class="background-notebook"></div>
+    <div class="line-notebook"></div>
+    <div class="header-notebook row d-flex justify-content-center align-items-center">
+      <div class="col-12"><span class="title-notebook">To-Do List</span></div>
+    </div>
+
+    <div class="container-tasks col-12 ">
+      <% for (const [category, tasks] of Object.entries(toDoList)){%>
+
+        <div class="container-task">
+          <h1 class="task-category" id="<%= category %>">
+            <i class="material-icons-outlined task-category-icon"></i>
+            <%= category %>
+          </h1>
+
+          <ul class="task-list pb-2" id="<%= category + '-list' %>">
+            <% for (const [taskName, value] of Object.entries(tasks)) { %>
+              <% const taskId=(category + '-' + taskName).replace(/ /g, '-' ); %>
+                <li class="task-name">
+                  <input type="checkbox" class="task-check" name="<%= taskId %>" id="<%= taskId %>" <%=value===0 ? ''
+                    : 'checked' %>>
+                  <label class="<%= category %>" for="<%= taskId %>">
+                    <%= taskName %>
+                  </label>
+                </li>
+                <% } %>
+          </ul>
         </div>
-    </div>
-
-    <div class="container-tasks " >
-    <% for (const [category, tasks] of Object.entries(toDoList)){%>
-        <!--<span class="material-icons-outlined">
-pending_actions
-</span>-->
-    <h1 class="task-category">  <i class="material-icons-outlined">pending_actions</i>
-        <%= category %></h1>
-    
-        <% if (Object.keys(tasks)) { %>
-            <ul class="task-list pb-2">
-                <% for (const [taskName, value] of Object.entries(tasks)){%>
-                   
-                    
-                        <% if (value==0) { %>
-                          
-                            <li class="task-name"><input type="checkbox" class="task-check" name="<%= taskName.replace(/\s+/g, '') %>" id="<%= taskName.replace(/\s+/g, '') %>" > <label for="<%= taskName.replace(/\s+/g, '') %>"><%= taskName %></label></li>    
-                           
-                        <% } else{ %>
-                            <li class="task-name"><input type="checkbox" class="task-check" name="<%= taskName.replace(/\s+/g, '') %>" id="<%= taskName.replace(/\s+/g, '') %>" checked> <label for="<%= taskName.replace(/\s+/g, '') %>"><%= taskName %></label></li>
-                            <% } %>
-                    <% } %>
-            </ul>
         <% } %>
-    
-    <% } %>
-
-   
-
-      
-</div>
-    
-
-
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+
+
+
+    <div class="col-12 text-center task-icon-container crud-buttons">
+      <span data-bs-toggle="modal" data-bs-target="#taskAddModal" class="material-icons-outlined task-icon task-add">
+        add
+      </span>
+      <span data-bs-toggle="modal" data-bs-target="#taskEditModal" class="material-icons-outlined task-icon task-edit">
+        edit
+      </span>
+      <span data-bs-toggle="modal" data-bs-target="#taskDeleteModal"
+        class="material-icons-outlined task-icon task-delete">
+        close
+      </span>
+    </div>
+
+
+
+  </div>
+
+  <div class="modal fade taskModal" id="taskAddModal" tabindex="-1" aria-labelledby="taskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="background-taskModal"></div>
+        <div class="line-notebook-btm"></div>
+        <div class="line-notebook"></div>
+        <div class="modal-header justify-content-center">
+          <h1 class="modal-title  " id="taskModalLabel">Create a new task</h1>
+
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" class="form-label">What type of task are we dealing with?
+            </label>
+            <select id="categorySelect" class="form-select">
+
+
+              <% for (const [category, tasks] of Object.entries(toDoList)) { %>
+                <option value="<%= category %>">
+                  <%= category %>
+                </option>
+                <% } %>
+
+                  <option class="text-secondary " value="NewCategory">New category...</option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="categoryName">
+            <label for="" class="form-label">Category Name</label>
+            <input id="input-categoryName" type="text" class="form-control " name="" aria-describedby="helpId"
+              placeholder="">
+
+            <span id="categoryName-info" class="form-label my-5" style="font-size: 1rem;"></span>
+
+          </div>
+
+          <div class="mb-3">
+            <label for="" class="form-label">Task Name</label>
+            <input type="text" class="form-control" name="" id="taskName" aria-describedby="helpId" placeholder="">
+
+            <span id="taskName-info" class="form-label my-5" style="font-size: 1rem;"></span>
+
+
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+          <button id="create-task" type="button" class="btn btn-primary">Create task!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade taskModal" id="taskEditModal" tabindex="-1" aria-labelledby="taskEditModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="background-taskModal"></div>
+        <div class="line-notebook-btm"></div>
+        <div class="line-notebook"></div>
+        <div class="modal-header justify-content-center">
+          <h1 class="modal-title  " id="taskModalLabelEdit">Edit a current task</h1>
+
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" class="form-label">What are you going to modify?
+            </label>
+            <select id="taskOrCategoryEdit" class="form-select">
+
+
+              <option class="text-secondary " value="editCategory">Category </option>
+              <option class="text-secondary " value="editTaskName">Task </option>
+            </select>
+          </div>
+
+          <div class="mb-3" id="categoryNameEdit">
+            <label for="" class="form-label">Category Name</label>
+            <select id="categorySelectEdit" class="form-select">
+
+
+              <% for (const [category, tasks] of Object.entries(toDoList)) { %>
+                <option value="<%= category %>">
+                  <%= category %>
+                </option>
+                <% } %>
+
+
+            </select>
+
+          </div>
+
+          <div class="mb-3" id="taskNameEdit">
+            <label for="" class="form-label">Task Name</label>
+            <select id="taskSelectEdit" class="form-select">
+
+
+
+              <% for (const [category, tasks] of Object.entries(toDoList)) { %>
+                <optgroup label="<%= category %>">
+                  <% for (const [taskName, value] of Object.entries(tasks)) { %>
+                    <option value="<%= taskName %>" data-category="<%= category %>">
+                      <%= taskName %>
+                    </option>
+                    <% } %>
+                </optgroup>
+                <% } %>
+
+
+
+            </select>
+
+          </div>
+
+          <div class="mb-3">
+            <label id="labelNewCategoryTask" for="" class="form-label">New Category Name</label>
+            <input type="text" class="form-control" name="" id="newTaskNameCategory" aria-describedby="helpId"
+              placeholder="">
+
+            <span id="newTaskNameCategory-info" class="form-label my-5" style="font-size: 1rem;"></span>
+
+          </div>
+
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+          <button id="edit-task" type="button" class="btn btn-primary">Make a change!</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade taskModal" id="taskDeleteModal" tabindex="-1" aria-labelledby="taskDeleteModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="background-taskModal"></div>
+
+        <div class="line-notebook-btm"></div>
+        <div class="line-notebook"></div>
+
+        <div class="modal-header justify-content-center">
+          <h1 class="modal-title  " id="taskModalLabelDelete">Delete a current task</h1>
+        </div>
+
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="" class="form-label">What are you going to delete?
+            </label>
+            <select id="taskOrCategoryDelete" class="form-select">
+
+              <option class="text-secondary " value="deleteCategory">Some Category</option>
+              <option class="text-secondary " value="deleteTaskName">Some Task </option>
+
+            </select>
+          </div>
+
+          <div class="mb-3" id="categoryNameDelete">
+            <label for="" class="form-label">Category</label>
+            <select id="categorySelectDelete" class="form-select">
+
+              <% for (const [category, tasks] of Object.entries(toDoList)) { %>
+                <option value="<%= category %>">
+                  <%= category %>
+                </option>
+                <% } %>
+
+            </select>
+
+          </div>
+
+          <div class="mb-3" id="taskNameDelete">
+            <label for="" class="form-label">Task</label>
+            <select id="taskSelectDelete" class="form-select">
+
+              <% for (const [category, tasks] of Object.entries(toDoList)) { %>
+                <optgroup label="<%= category %>">
+                  <% for (const [taskName, value] of Object.entries(tasks)) { %>
+                    <option value="<%= taskName %>" data-category="<%= category %>">
+                      <%= taskName %>
+                    </option>
+                    <% } %>
+                </optgroup>
+                <% } %>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" data-bs-dismiss="modal">Cancel</button>
+          <button id="delete-task" type="button" class="btn btn-primary">Delete this one!</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="/scripts/script.js"></script>
 </body>
 
 </html>

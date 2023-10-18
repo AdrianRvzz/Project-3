@@ -1,11 +1,24 @@
 *{
     font-family: 'Mali', cursive;
-    
+    font-family: cursive;
     
 }
 body {
-   
+   position: relative;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+    min-height: 100vh;
 }
+
+.background-chair{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #2B3467;
+    z-index: -3;
+}
+
 *::selection{
     background-color: #FCFFE7;
 }
@@ -16,15 +29,26 @@ BAD7E9
 2B3467 */
 #container-notebook{
     position: relative;
-    max-width: 501px;
+    max-width: 701px;
     border: 30px solid #fff;
-   
+    margin: 0;
     
 }
+
+
 .container-date{
     max-width: 200px;
     color: #2B3467;
     
+}
+.container-tasks{
+    padding-left: 40px;
+ 
+}
+.title-notebook{
+    font-size: 3rem;
+    font-weight: 600;
+    color: #2B3467;
 }
 .date-day{
     font-size: 3rem;
@@ -36,17 +60,24 @@ BAD7E9
     font-weight: 500;
     user-select: text;
 }
-
-.background{
+.line-notebook{
+    position: absolute;
+    width: 100%;
+    z-index: -1;
+    height: 100%;
+    left: 20px;
+    border-left:1px solid rgba(255, 0, 0, 0.5);
+}
+.background-notebook, .background-taskModal{
     position: absolute;
     width: 100%;
     height: 100%;
     z-index: -1;
     background-color: #ffffff;
-    opacity: 0.4;
-    background-image:  linear-gradient(#BAD7E9 1px, transparent 1px), linear-gradient(to right, #BAD7E9 1px, #ffffff 1px);
-    background-size: 20px 20px;
     
+  
+    background-image:  linear-gradient(rgba(61,153,230,0.15) 1.3px, transparent 1.3px), linear-gradient(to right, rgba(61,153,230,0.15) 1.3px, #ffffff 1.3px);
+    background-size: 20px 20px;
     
 }
 
@@ -54,11 +85,17 @@ BAD7E9
     color: #EB455F;
     
 }
+.task-category > i {
+    user-select: none;
+    
+   
+}
 
 .task-name{
     font-size: 1.5rem;
     color: #2B3467;
-    user-select: none;
+    
+    margin-bottom: 1rem;
     
     
 }
@@ -66,12 +103,13 @@ BAD7E9
     cursor:pointer;
 }
 .task-name label:hover{
-    text-decoration: dashed;
+    opacity: 0.7;
+    
 }
 
 .task-check:checked ~ label{
     text-decoration: line-through;
-    cursor:not-allowed;
+    
     
 }
 
@@ -83,4 +121,101 @@ BAD7E9
     list-style:none;
     padding: 0px;
     
+}
+
+.task-completed{
+    color: green;
+}
+
+
+.task-icon {
+    cursor: pointer;
+    user-select: none;
+    font-size: 2.5rem;
+    color: #fff;
+    background-color: #EB455F;
+    border-radius: 50%;
+    
+    content: "+";
+    
+    /*background-color:rgb(43, 52, 103, 0.05);*/
+    
+}
+.task-icon:hover{
+    
+
+    padding: 5px;
+    
+}
+.task-icon::selection{
+    background-color: #2B3467;
+}
+
+
+.taskModal .modal-dialog{
+    max-width: 601px;
+    
+    z-index: 0;
+}
+.taskModal .modal-header {
+    border-bottom: 0px;
+}
+.taskModal .modal-title {
+    color: #2B3467;
+    font-size: 2.25rem;
+    font-weight: 600
+}
+.taskModal .modal-body {
+    padding-left: 40px;
+}
+
+
+.taskModal .modal-content{
+    border: 20px solid #fff;
+  
+    z-index: 0;
+}
+
+
+.taskModal .modal-footer {
+    border: 0px;
+}
+.taskModal .line-notebook-btm{
+    position: relative;
+    border-left: 0px;
+    border-bottom: 1px solid rgba(255, 0, 0, 0.5);
+    left: 0px;
+    top: 80px;
+    height: 0px;
+}
+
+.taskModal .form-label {
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: #EB455F;
+}
+.taskModal .form-control, .taskModal .form-select{
+ 
+    color: #2B3467;
+    border: 0px;
+    background-color: transparent;
+    border-bottom: 1px solid #2B3467;
+    border-radius: 0px;
+    font-size: 1.5rem;
+}
+
+
+
+.btn-primary{
+    background-color: #EB455F;
+    border-color: #EB455F;
+}
+.btn-primary:hover{
+    background-color: #2B3467;
+}
+.btn-outline{
+    color:#EB455F ;
+}
+.btn-outline:hover{
+    color: #2B3467;
 }
